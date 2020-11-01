@@ -2,6 +2,7 @@ import 'package:flutter_blog_app/Authentication.dart';
 import 'PhotoUpload.dart';
 import 'package:flutter_blog_app/Posts.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Posts> postsList = [];
-
+  List<bool> comment=[];
+  final commentcontroller = new TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> {
           DATA[indivisualKey]['time'],
         );
         postsList.add(posts);
+        comment.add(true);
       }
 
       setState(() {
@@ -46,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget postsUI(String date, String image, String description, String time) {
+  Widget postsUI(String date, String image, String description, String time,bool comment,int index) {
     return Card(
       elevation: 12.0,
       margin: EdgeInsets.all(16.0),
@@ -94,6 +97,25 @@ class _HomePageState extends State<HomePage> {
               ),
               textAlign: TextAlign.center,
             ),
+          
+            Container(
+              child: Row(
+                children: <Widget>[
+                  LikeButton(
+                  
+                  )
+
+                ],
+              ),
+            ),
+            comment?TextField(
+              controller: commentcontroller,
+              decoration: InputDecoration(
+                  hintText: "Enter Comment",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  )),
+            ):Container()
           ],
         ),
       ),
@@ -124,7 +146,9 @@ class _HomePageState extends State<HomePage> {
                         postsList[index].date,
                         postsList[index].image,
                         postsList[index].description,
-                        postsList[index].time);
+                        postsList[index].time,
+                        comment[index],
+                        index);
                   },
                   itemCount: postsList.length,
                 ),

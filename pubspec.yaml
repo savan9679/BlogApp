@@ -30,6 +30,7 @@ dependencies:
   firebase_database:
   firebase_storage:
   cloud_firestore:
+  like_button:
 
 
 dev_dependencies:
